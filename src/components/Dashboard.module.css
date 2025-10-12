@@ -1,114 +1,290 @@
 .container {
-  max-width: 1200px;
-  margin: 20px auto;
-  background: #ffffff;
-  border-radius: 12px;
+  position: relative;
+  max-width: 1260px;
+  margin: 44px auto;
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--color-surface), var(--color-surface-alt));
+  border: 1px solid rgba(11, 166, 223, 0.28);
+  box-shadow: var(--shadow-elevated);
+  backdrop-filter: blur(22px);
   overflow: hidden;
-  box-shadow: 0 15px 45px rgba(23, 43, 77, 0.08);
+  transition: transform var(--transition-snappy), box-shadow var(--transition-snappy);
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(11, 166, 223, 0.18), rgba(239, 119, 34, 0.16));
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.container:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 36px 62px rgba(8, 16, 36, 0.55);
 }
 
 .header {
-  background: #ffffff;
-  padding: 32px 40px;
-  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  padding: 42px 52px 34px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(115deg, rgba(244, 246, 251, 0.08), rgba(11, 166, 223, 0.15));
+  overflow: hidden;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  inset: -40% -30% 10% 40%;
+  background: radial-gradient(circle, rgba(250, 165, 51, 0.35), transparent 70%);
+  opacity: 0.55;
+  filter: blur(12px);
+}
+
+.header > * {
+  position: relative;
+  z-index: 1;
 }
 
 .title {
-  font-size: 24px;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 30px;
   font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 10px;
+  letter-spacing: 1.8px;
+  color: var(--color-text-primary);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(11, 166, 223, 0.45);
 }
 
 .lastUpdate {
-  color: #666666;
-  font-size: 13px;
-  font-weight: 400;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  letter-spacing: 0.4px;
 }
 
 .controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 18px;
+  margin-top: 26px;
 }
 
 .controlGroup {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1px solid rgba(244, 246, 251, 0.22);
+  border-radius: 16px;
+  background: rgba(15, 24, 40, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(11, 166, 223, 0.12);
+  transition: border-color var(--transition-snappy), background var(--transition-snappy),
+    box-shadow var(--transition-snappy);
+}
+
+.controlGroup:hover {
+  border-color: rgba(250, 165, 51, 0.45);
+  background: rgba(33, 47, 68, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(250, 165, 51, 0.16);
 }
 
 .controlLabel {
-  font-size: 13px;
-  font-weight: 500;
-  color: #333333;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(244, 246, 251, 0.8);
 }
 
 .select {
   appearance: none;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
-  padding: 6px 30px 6px 10px;
+  border: 1px solid rgba(244, 246, 251, 0.25);
+  border-radius: 12px;
+  padding: 9px 42px 9px 16px;
   font-size: 13px;
-  background: #ffffff url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23666666'/%3E%3C/svg%3E") no-repeat right 10px center;
-  background-size: 12px 8px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background:
+    linear-gradient(140deg, rgba(11, 166, 223, 0.22), rgba(239, 119, 34, 0.22)),
+    rgba(20, 30, 48, 0.9)
+    url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23F4F6FB'/%3E%3C/svg%3E") no-repeat right 14px center;
+  background-size: auto, 12px 8px;
   cursor: pointer;
+  transition: border-color var(--transition-snappy), box-shadow var(--transition-snappy),
+    transform var(--transition-snappy);
+}
+
+.select:hover {
+  border-color: rgba(11, 166, 223, 0.6);
+}
+
+.select:focus {
+  outline: none;
+  border-color: rgba(11, 166, 223, 0.8);
+  box-shadow: 0 0 0 4px rgba(11, 166, 223, 0.22);
+  transform: translateY(-1px);
 }
 
 .controlHint {
   font-size: 12px;
-  color: #777777;
+  color: rgba(244, 246, 251, 0.65);
 }
 
 .metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  border-bottom: 1px solid #e0e0e0;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 34px 52px;
+  background: rgba(12, 20, 36, 0.58);
 }
 
 .chartSection {
-  background: #ffffff;
-  padding: 42px 40px 48px;
-  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  padding: 38px 52px 54px;
+  border-top: 1px solid var(--color-border);
+  background: rgba(15, 24, 42, 0.72);
+  overflow: hidden;
+}
+
+.chartSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(11, 166, 223, 0.18), transparent 60%);
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .chartTitle {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1a1a1a;
-  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(244, 246, 251, 0.92);
+  margin-bottom: 26px;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 2.6px;
+  text-shadow: 0 0 14px rgba(11, 166, 223, 0.45);
 }
 
 .chartWrapper {
   position: relative;
+  z-index: 1;
   height: 320px;
+  padding: 18px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(11, 166, 223, 0.18), rgba(239, 119, 34, 0.12));
+  border: 1px solid rgba(244, 246, 251, 0.16);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-snappy), box-shadow var(--transition-snappy);
+}
+
+.chartWrapper:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 50px rgba(10, 20, 40, 0.55);
+}
+
+.chartControls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.chartControlLabel {
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: rgba(244, 246, 251, 0.72);
+}
+
+.chartSelect {
+  appearance: none;
+  border: 1px solid rgba(244, 246, 251, 0.22);
+  border-radius: 10px;
+  padding: 7px 32px 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background:
+    linear-gradient(140deg, rgba(11, 166, 223, 0.2), rgba(239, 119, 34, 0.18)),
+    rgba(15, 24, 42, 0.9)
+    url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23F4F6FB'/%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: auto, 12px 8px;
+  cursor: pointer;
+  transition: border-color var(--transition-snappy), box-shadow var(--transition-snappy),
+    transform var(--transition-snappy);
+}
+
+.chartSelect:hover {
+  border-color: rgba(11, 166, 223, 0.6);
+}
+
+.chartSelect:focus {
+  outline: none;
+  border-color: rgba(11, 166, 223, 0.9);
+  box-shadow: 0 0 0 3px rgba(11, 166, 223, 0.18);
+  transform: translateY(-1px);
 }
 
 .status {
+  position: relative;
+  z-index: 1;
   font-size: 13px;
-  color: #c0392b;
-  margin-top: 12px;
+  color: rgba(250, 165, 51, 0.95);
+  margin-top: 18px;
 }
 
 .channelName {
+  position: relative;
+  z-index: 1;
+  font-family: "Orbitron", "Inter", sans-serif;
   font-size: 13px;
-  font-weight: 500;
-  color: #444444;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: rgba(11, 166, 223, 0.92);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    margin: 32px 20px;
+  }
+
+  .header {
+    padding: 34px 36px 28px;
+  }
+
+  .metrics {
+    padding: 28px 32px;
+  }
+
+  .chartSection {
+    padding: 32px 32px 44px;
+  }
 }
 
 @media (max-width: 768px) {
   .container {
-    margin: 12px;
+    margin: 22px 12px;
   }
 
   .header,
   .chartSection {
+    padding: 26px 22px 32px;
+  }
+
+  .metrics {
     padding: 24px;
+    gap: 16px;
   }
 
   .chartWrapper {
@@ -116,12 +292,27 @@
   }
 
   .controls {
-    gap: 8px;
+    gap: 12px;
   }
 
   .controlGroup {
     flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .select {
+    width: 100%;
+  }
+
+  .chartControls {
+    flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
+    gap: 8px;
+  }
+
+  .chartSelect {
+    width: 100%;
   }
 }

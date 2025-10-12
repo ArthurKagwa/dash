@@ -1,9 +1,9 @@
-import { ThingSpeakFeed, ThingSpeakResponse, SensorSnapshot } from "@/types/thingspeak";
+﻿import { ThingSpeakFeed, ThingSpeakResponse, SensorSnapshot } from "@/types/thingspeak";
 
 export const DEFAULT_RESULTS = 50;
 export const DEFAULT_RANGE_MINUTES = 360;
 
-type FetchOptions =
+type FetchMode =
     | {
           results?: number;
           minutes?: undefined;
@@ -13,7 +13,7 @@ type FetchOptions =
           minutes?: number;
       };
 
-export async function fetchThingSpeakFeeds(options: FetchOptions = {}): Promise<ThingSpeakResponse> {
+export async function fetchThingSpeakFeeds(options: FetchMode = {}): Promise<ThingSpeakResponse> {
     const { results = DEFAULT_RESULTS, minutes } = options;
     const channelId =
         process.env.THINGSPEAK_CHANNEL_ID ?? process.env.NEXT_PUBLIC_THINGSPEAK_CHANNEL_ID;
@@ -24,9 +24,7 @@ export async function fetchThingSpeakFeeds(options: FetchOptions = {}): Promise<
         throw new Error("ThingSpeak channel id or read key missing.");
     }
 
-    const url = new URL(
-        `https://api.thingspeak.com/channels/${channelId}/feeds.json`
-    );
+    const url = new URL(`https://api.thingspeak.com/channels/${channelId}/feeds.json`);
     url.searchParams.set("api_key", readKey);
     if (typeof minutes === "number" && Number.isFinite(minutes) && minutes > 0) {
         url.searchParams.set("minutes", minutes.toString());
@@ -36,7 +34,6 @@ export async function fetchThingSpeakFeeds(options: FetchOptions = {}): Promise<
 
     const response = await fetch(url.toString(), {
         headers: { Accept: "application/json" },
-        // Defer caching responsibility to the calling component.
         cache: "no-store"
     });
 
@@ -61,10 +58,10 @@ export function buildSnapshot(feeds: ThingSpeakFeed[]): SensorSnapshot {
     const latest = feeds[feeds.length - 1];
 
     return {
-        temperature: toNumber(latest.field4),  // Temperature is field4
-        humidity: toNumber(latest.field2),     // Humidity is field2
-        motionCount: toNumber(latest.field3),  // Motion is field3
-        batteryVoltage: toNumber(latest.field1), // Battery is field1
+        temperature: toNumber(latest.field4),
+        humidity: toNumber(latest.field2),
+        motionCount: toNumber(latest.field3),
+        batteryVoltage: toNumber(latest.field1),
         timestamp: latest.created_at ?? null
     };
 }
@@ -72,8 +69,10 @@ export function buildSnapshot(feeds: ThingSpeakFeed[]): SensorSnapshot {
 export function mapSeries(feeds: ThingSpeakFeed[]) {
     return feeds.map((feed) => ({
         timestamp: feed.created_at,
-        temperature: toNumber(feed.field4),  // Temperature is field4
-        humidity: toNumber(feed.field2)      // Humidity is field2
+        temperature: toNumber(feed.field4),
+        humidity: toNumber(feed.field2),
+        motion: toNumber(feed.field3),
+        battery: toNumber(feed.field1)
     }));
 }
 
@@ -84,3 +83,4 @@ function toNumber(value: string | null | undefined): number | null {
     const parsed = Number.parseFloat(value);
     return Number.isFinite(parsed) ? parsed : null;
 }
+

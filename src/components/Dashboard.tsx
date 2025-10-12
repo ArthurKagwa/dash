@@ -45,7 +45,13 @@ export function Dashboard({
     const [refreshMs, setRefreshMs] = useState(
         refreshInterval >= 0 ? refreshInterval : DEFAULT_INTERVAL
     );
-    const [timeRangeMinutes, setTimeRangeMinutes] = useState(
+    const [temperatureRangeMinutes, setTemperatureRangeMinutes] = useState(
+        initialRangeMinutes > 0 ? initialRangeMinutes : DEFAULT_RANGE_MINUTES
+    );
+    const [humidityRangeMinutes, setHumidityRangeMinutes] = useState(
+        initialRangeMinutes > 0 ? initialRangeMinutes : DEFAULT_RANGE_MINUTES
+    );
+    const [motionRangeMinutes, setMotionRangeMinutes] = useState(
         initialRangeMinutes > 0 ? initialRangeMinutes : DEFAULT_RANGE_MINUTES
     );
 
@@ -58,7 +64,10 @@ export function Dashboard({
     }, [refreshInterval]);
 
     useEffect(() => {
-        setTimeRangeMinutes(initialRangeMinutes > 0 ? initialRangeMinutes : DEFAULT_RANGE_MINUTES);
+        const normalized = initialRangeMinutes > 0 ? initialRangeMinutes : DEFAULT_RANGE_MINUTES;
+        setTemperatureRangeMinutes(normalized);
+        setHumidityRangeMinutes(normalized);
+        setMotionRangeMinutes(normalized);
     }, [initialRangeMinutes]);
 
     useEffect(() => {
@@ -67,10 +76,19 @@ export function Dashboard({
         async function refreshFeeds() {
             setIsRefreshing(true);
             try {
+                const minuteRanges = [
+                    temperatureRangeMinutes,
+                    humidityRangeMinutes,
+                    motionRangeMinutes
+                ].filter((value) => value > 0);
+                const maxMinutes =
+                    minuteRanges.length > 0 ? Math.max(...minuteRanges) : undefined;
+
                 const query =
-                    timeRangeMinutes > 0
-                        ? `minutes=${timeRangeMinutes}`
+                    typeof maxMinutes === "number"
+                        ? `minutes=${maxMinutes}`
                         : `results=${RESULTS}`;
+
                 const response = await fetch(`/api/thingspeak?${query}`, {
                     cache: "no-store"
                 });
@@ -107,7 +125,7 @@ export function Dashboard({
             cancelled = true;
             clearInterval(timer);
         };
-    }, [refreshMs, timeRangeMinutes]);
+    }, [refreshMs, temperatureRangeMinutes, humidityRangeMinutes, motionRangeMinutes]);
 
     const handleIntervalChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const nextValue = Number.parseInt(event.target.value, 10);
@@ -116,19 +134,54 @@ export function Dashboard({
         }
     };
 
-    const handleRangeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const handleTemperatureRangeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const nextValue = Number.parseInt(event.target.value, 10);
         if (Number.isFinite(nextValue) && nextValue > 0) {
-            setTimeRangeMinutes(nextValue);
+            setTemperatureRangeMinutes(nextValue);
+        }
+    };
+
+    const handleHumidityRangeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const nextValue = Number.parseInt(event.target.value, 10);
+        if (Number.isFinite(nextValue) && nextValue > 0) {
+            setHumidityRangeMinutes(nextValue);
+        }
+    };
+
+    const handleMotionRangeChange = (event: ChangeEvent<HTMLSelectElement>) => {
+        const nextValue = Number.parseInt(event.target.value, 10);
+        if (Number.isFinite(nextValue) && nextValue > 0) {
+            setMotionRangeMinutes(nextValue);
         }
     };
 
     const snapshot = useMemo(() => buildSnapshot(feeds), [feeds]);
-    const series = useMemo(() => mapSeries(feeds), [feeds]);
+    const rawSeries = useMemo(() => mapSeries(feeds), [feeds]);
 
-    const labels = series.map((item) => formatLabel(item.timestamp));
-    const temperatureValues = series.map((item) => item.temperature);
-    const humidityValues = series.map((item) => item.humidity);
+    const temperatureSeries = useMemo(
+        () => filterSeriesByMinutes(rawSeries, temperatureRangeMinutes),
+        [rawSeries, temperatureRangeMinutes]
+    );
+    const humiditySeries = useMemo(
+        () => filterSeriesByMinutes(rawSeries, humidityRangeMinutes),
+        [rawSeries, humidityRangeMinutes]
+    );
+    const motionSeries = useMemo(
+        () => filterSeriesByMinutes(rawSeries, motionRangeMinutes),
+        [rawSeries, motionRangeMinutes]
+    );
+
+    const temperatureLabels = temperatureSeries.map((item) =>
+        formatChartLabel(item.timestamp)
+    );
+    const humidityLabels = humiditySeries.map((item) => formatChartLabel(item.timestamp));
+    const motionLabels = motionSeries.map((item) => formatChartLabel(item.timestamp));
+    const temperatureValues = temperatureSeries.map((item) => item.temperature);
+    const humidityValues = humiditySeries.map((item) => item.humidity);
+    const motionValues = motionSeries.map((item) => item.motion);
+    const temperatureTimestamps = temperatureSeries.map((item) => item.timestamp ?? null);
+    const humidityTimestamps = humiditySeries.map((item) => item.timestamp ?? null);
+    const motionTimestamps = motionSeries.map((item) => item.timestamp ?? null);
 
     return (
         <main className={styles.container}>
@@ -163,26 +216,6 @@ export function Dashboard({
                             {formatIntervalHint(refreshMs)}
                         </span>
                     </div>
-                    <div className={styles.controlGroup}>
-                        <label htmlFor="time-range" className={styles.controlLabel}>
-                            Graph time range:
-                        </label>
-                        <select
-                            id="time-range"
-                            className={styles.select}
-                            value={timeRangeMinutes.toString()}
-                            onChange={handleRangeChange}
-                        >
-                            {TIME_RANGE_OPTIONS.map((option) => (
-                                <option key={option.minutes} value={option.minutes.toString()}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                        <span className={styles.controlHint}>
-                            {formatRangeHint(timeRangeMinutes)}
-                        </span>
-                    </div>
                 </div>
                 {error && <p className={styles.status}>Unable to refresh data: {error}</p>}
                 {!error && isRefreshing && <p className={styles.status}>Refreshing data...</p>}
@@ -192,7 +225,7 @@ export function Dashboard({
                 <MetricCard
                     title="Temperature"
                     value={formatValue(snapshot.temperature, 2)}
-                    unit="Â°C"
+                    unit="deg C"
                 />
                 <MetricCard
                     title="Humidity"
@@ -214,13 +247,30 @@ export function Dashboard({
             <section className={styles.chartSection}>
                 <h2 className={styles.chartTitle}>Temperature Trend</h2>
                 <div className={styles.chartWrapper}>
+                    <div className={styles.chartControls}>
+                        <label htmlFor="temperature-range" className={styles.chartControlLabel}>
+                            Range
+                        </label>
+                        <select
+                            id="temperature-range"
+                            className={styles.chartSelect}
+                            value={temperatureRangeMinutes.toString()}
+                            onChange={handleTemperatureRangeChange}
+                        >
+                            {TIME_RANGE_OPTIONS.map((option) => (
+                                <option key={`temp-${option.minutes}`} value={option.minutes.toString()}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <TrendChart
-                        labels={labels}
+                        labels={temperatureLabels}
                         data={temperatureValues}
-                        label="Temperature (°C)"
-                        borderColor="#333333"
-                        backgroundColor="rgba(51, 51, 51, 0.08)"
-                        suggestedMin={0}
+                        label="Temperature (deg C)"
+                        timestamps={temperatureTimestamps}
+                        borderColor="#0BA6DF"
+                        backgroundColor="rgba(11, 166, 223, 0.22)"
                     />
                 </div>
             </section>
@@ -228,15 +278,67 @@ export function Dashboard({
             <section className={styles.chartSection}>
                 <h2 className={styles.chartTitle}>Humidity Trend</h2>
                 <div className={styles.chartWrapper}>
+                    <div className={styles.chartControls}>
+                        <label htmlFor="humidity-range" className={styles.chartControlLabel}>
+                            Range
+                        </label>
+                        <select
+                            id="humidity-range"
+                            className={styles.chartSelect}
+                            value={humidityRangeMinutes.toString()}
+                            onChange={handleHumidityRangeChange}
+                        >
+                            {TIME_RANGE_OPTIONS.map((option) => (
+                                <option
+                                    key={`humidity-${option.minutes}`}
+                                    value={option.minutes.toString()}
+                                >
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <TrendChart
-                        labels={labels}
+                        labels={humidityLabels}
                         data={humidityValues}
                         label="Humidity (%)"
-                        borderColor="#666666"
-                        backgroundColor="rgba(102, 102, 102, 0.08)"
+                        timestamps={humidityTimestamps}
+                        borderColor="#FAA533"
+                        backgroundColor="rgba(250, 165, 51, 0.2)"
                         suggestedMax={100}
                         suggestedMin={0}
 
+                    />
+                </div>
+            </section>
+            {/* motion */}
+            <section className={styles.chartSection}>
+                <h2 className={styles.chartTitle}>Motion Events Trend</h2>
+                <div className={styles.chartWrapper}>
+                    <div className={styles.chartControls}>
+                        <label htmlFor="motion-range" className={styles.chartControlLabel}>
+                            Range
+                        </label>
+                        <select
+                            id="motion-range"
+                            className={styles.chartSelect}
+                            value={motionRangeMinutes.toString()}
+                            onChange={handleMotionRangeChange}
+                        >
+                            {TIME_RANGE_OPTIONS.map((option) => (
+                                <option key={`motion-${option.minutes}`} value={option.minutes.toString()}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <TrendChart
+                        labels={motionLabels}
+                        data={motionValues}
+                        label="Motion Events"
+                        timestamps={motionTimestamps}
+                        borderColor="#8A7BFF"
+                        backgroundColor="rgba(138, 123, 255, 0.2)"
                     />
                 </div>
             </section>
@@ -256,16 +358,6 @@ function formatInteger(value: number | null) {
         return "--";
     }
     return Math.round(value).toString();
-}
-
-function formatLabel(timestamp?: string | null) {
-    if (!timestamp) {
-        return "";
-    }
-    return new Date(timestamp).toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
 }
 
 function formatTimestamp(timestamp: string) {
@@ -291,20 +383,31 @@ function formatIntervalHint(intervalMs: number) {
     return `Updates every ${minutes} minutes.`;
 }
 
-function formatRangeHint(minutes: number) {
-    if (minutes < 60) {
-        return `Showing roughly the last ${minutes} minutes of data.`;
+function filterSeriesByMinutes<T extends { timestamp?: string | null }>(
+    series: T[],
+    minutes: number
+) {
+    if (minutes <= 0) {
+        return series;
     }
-    const hours = minutes / 60;
-    if (hours < 24) {
-        return `Showing roughly the last ${trimTrailingZero(hours)} hours of data.`;
-    }
-    const days = hours / 24;
-    return `Showing roughly the last ${trimTrailingZero(days)} days of data.`;
+    const cutoff = Date.now() - minutes * 60_000;
+    return series.filter((item) => {
+        if (!item.timestamp) {
+            return false;
+        }
+        const time = Date.parse(item.timestamp);
+        return Number.isFinite(time) && time >= cutoff;
+    });
 }
 
-function trimTrailingZero(value: number) {
-    return value % 1 === 0 ? value.toString() : value.toFixed(1);
+function formatChartLabel(timestamp?: string | null) {
+    if (!timestamp) {
+        return "";
+    }
+    return new Date(timestamp).toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
 }
 
 

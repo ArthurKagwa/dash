@@ -2,118 +2,298 @@
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/Dashboard.module.css ***!
   \*******************************************************************************************************************************************************************************************************************************************************************************/
 .Dashboard_container__kBdCq {
-  max-width: 1200px;
-  margin: 20px auto;
-  background: #ffffff;
-  border-radius: 12px;
+  position: relative;
+  max-width: 1260px;
+  margin: 44px auto;
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--color-surface), var(--color-surface-alt));
+  border: 1px solid rgba(11, 166, 223, 0.28);
+  box-shadow: var(--shadow-elevated);
+  -webkit-backdrop-filter: blur(22px);
+          backdrop-filter: blur(22px);
   overflow: hidden;
-  box-shadow: 0 15px 45px rgba(23, 43, 77, 0.08);
+  transition: transform var(--transition-snappy), box-shadow var(--transition-snappy);
+}
+
+.Dashboard_container__kBdCq::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(11, 166, 223, 0.18), rgba(239, 119, 34, 0.16));
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.Dashboard_container__kBdCq:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 36px 62px rgba(8, 16, 36, 0.55);
 }
 
 .Dashboard_header__tbwsX {
-  background: #ffffff;
-  padding: 32px 40px;
-  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  padding: 42px 52px 34px;
+  border-bottom: 1px solid var(--color-border);
+  background: linear-gradient(115deg, rgba(244, 246, 251, 0.08), rgba(11, 166, 223, 0.15));
+  overflow: hidden;
+}
+
+.Dashboard_header__tbwsX::after {
+  content: "";
+  position: absolute;
+  inset: -40% -30% 10% 40%;
+  background: radial-gradient(circle, rgba(250, 165, 51, 0.35), transparent 70%);
+  opacity: 0.55;
+  filter: blur(12px);
+}
+
+.Dashboard_header__tbwsX > * {
+  position: relative;
+  z-index: 1;
 }
 
 .Dashboard_title__w4f90 {
-  font-size: 24px;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 30px;
   font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 10px;
+  letter-spacing: 1.8px;
+  color: var(--color-text-primary);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(11, 166, 223, 0.45);
 }
 
 .Dashboard_lastUpdate__Owljg {
-  color: #666666;
-  font-size: 13px;
-  font-weight: 400;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  letter-spacing: 0.4px;
 }
 
 .Dashboard_controls__yoRUs {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 18px;
+  margin-top: 26px;
 }
 
 .Dashboard_controlGroup__Q_zQb {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1px solid rgba(244, 246, 251, 0.22);
+  border-radius: 16px;
+  background: rgba(15, 24, 40, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(11, 166, 223, 0.12);
+  transition: border-color var(--transition-snappy), background var(--transition-snappy),
+    box-shadow var(--transition-snappy);
+}
+
+.Dashboard_controlGroup__Q_zQb:hover {
+  border-color: rgba(250, 165, 51, 0.45);
+  background: rgba(33, 47, 68, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(250, 165, 51, 0.16);
 }
 
 .Dashboard_controlLabel__JvcJD {
-  font-size: 13px;
-  font-weight: 500;
-  color: #333333;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(244, 246, 251, 0.8);
 }
 
 .Dashboard_select__U3IC5 {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
-  padding: 6px 30px 6px 10px;
+  border: 1px solid rgba(244, 246, 251, 0.25);
+  border-radius: 12px;
+  padding: 9px 42px 9px 16px;
   font-size: 13px;
-  background: #ffffff url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23666666'/%3E%3C/svg%3E") no-repeat right 10px center;
-  background-size: 12px 8px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background:
+    linear-gradient(140deg, rgba(11, 166, 223, 0.22), rgba(239, 119, 34, 0.22)),
+    rgba(20, 30, 48, 0.9)
+    url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23F4F6FB'/%3E%3C/svg%3E") no-repeat right 14px center;
+  background-size: auto, 12px 8px;
   cursor: pointer;
+  transition: border-color var(--transition-snappy), box-shadow var(--transition-snappy),
+    transform var(--transition-snappy);
+}
+
+.Dashboard_select__U3IC5:hover {
+  border-color: rgba(11, 166, 223, 0.6);
+}
+
+.Dashboard_select__U3IC5:focus {
+  outline: none;
+  border-color: rgba(11, 166, 223, 0.8);
+  box-shadow: 0 0 0 4px rgba(11, 166, 223, 0.22);
+  transform: translateY(-1px);
 }
 
 .Dashboard_controlHint__BgI3o {
   font-size: 12px;
-  color: #777777;
+  color: rgba(244, 246, 251, 0.65);
 }
 
 .Dashboard_metrics__C_UF9 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  border-bottom: 1px solid #e0e0e0;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 20px;
+  gap: 20px;
+  padding: 34px 52px;
+  background: rgba(12, 20, 36, 0.58);
 }
 
 .Dashboard_chartSection__xw78k {
-  background: #ffffff;
-  padding: 42px 40px 48px;
-  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  padding: 38px 52px 54px;
+  border-top: 1px solid var(--color-border);
+  background: rgba(15, 24, 42, 0.72);
+  overflow: hidden;
+}
+
+.Dashboard_chartSection__xw78k::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(11, 166, 223, 0.18), transparent 60%);
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .Dashboard_chartTitle__XLd7n {
-  font-size: 14px;
-  font-weight: 500;
-  color: #1a1a1a;
-  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(244, 246, 251, 0.92);
+  margin-bottom: 26px;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 2.6px;
+  text-shadow: 0 0 14px rgba(11, 166, 223, 0.45);
 }
 
 .Dashboard_chartWrapper__daJ3I {
   position: relative;
+  z-index: 1;
   height: 320px;
+  padding: 18px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(11, 166, 223, 0.18), rgba(239, 119, 34, 0.12));
+  border: 1px solid rgba(244, 246, 251, 0.16);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-snappy), box-shadow var(--transition-snappy);
+}
+
+.Dashboard_chartWrapper__daJ3I:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 50px rgba(10, 20, 40, 0.55);
+}
+
+.Dashboard_chartControls__jPsjN {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.Dashboard_chartControlLabel__bCbdL {
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: rgba(244, 246, 251, 0.72);
+}
+
+.Dashboard_chartSelect__PTZwu {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid rgba(244, 246, 251, 0.22);
+  border-radius: 10px;
+  padding: 7px 32px 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background:
+    linear-gradient(140deg, rgba(11, 166, 223, 0.2), rgba(239, 119, 34, 0.18)),
+    rgba(15, 24, 42, 0.9)
+    url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23F4F6FB'/%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: auto, 12px 8px;
+  cursor: pointer;
+  transition: border-color var(--transition-snappy), box-shadow var(--transition-snappy),
+    transform var(--transition-snappy);
+}
+
+.Dashboard_chartSelect__PTZwu:hover {
+  border-color: rgba(11, 166, 223, 0.6);
+}
+
+.Dashboard_chartSelect__PTZwu:focus {
+  outline: none;
+  border-color: rgba(11, 166, 223, 0.9);
+  box-shadow: 0 0 0 3px rgba(11, 166, 223, 0.18);
+  transform: translateY(-1px);
 }
 
 .Dashboard_status__nfXWG {
+  position: relative;
+  z-index: 1;
   font-size: 13px;
-  color: #c0392b;
-  margin-top: 12px;
+  color: rgba(250, 165, 51, 0.95);
+  margin-top: 18px;
 }
 
 .Dashboard_channelName__o3bEB {
+  position: relative;
+  z-index: 1;
+  font-family: "Orbitron", "Inter", sans-serif;
   font-size: 13px;
-  font-weight: 500;
-  color: #444444;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: rgba(11, 166, 223, 0.92);
+  text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+  .Dashboard_container__kBdCq {
+    margin: 32px 20px;
+  }
+
+  .Dashboard_header__tbwsX {
+    padding: 34px 36px 28px;
+  }
+
+  .Dashboard_metrics__C_UF9 {
+    padding: 28px 32px;
+  }
+
+  .Dashboard_chartSection__xw78k {
+    padding: 32px 32px 44px;
+  }
 }
 
 @media (max-width: 768px) {
   .Dashboard_container__kBdCq {
-    margin: 12px;
+    margin: 22px 12px;
   }
 
   .Dashboard_header__tbwsX,
   .Dashboard_chartSection__xw78k {
+    padding: 26px 22px 32px;
+  }
+
+  .Dashboard_metrics__C_UF9 {
     padding: 24px;
+    gap: 16px;
   }
 
   .Dashboard_chartWrapper__daJ3I {
@@ -121,13 +301,28 @@
   }
 
   .Dashboard_controls__yoRUs {
-    gap: 8px;
+    gap: 12px;
   }
 
   .Dashboard_controlGroup__Q_zQb {
     flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .Dashboard_select__U3IC5 {
+    width: 100%;
+  }
+
+  .Dashboard_chartControls__jPsjN {
+    flex-direction: column;
     align-items: flex-start;
-    gap: 6px;
+    gap: 8px;
+  }
+
+  .Dashboard_chartSelect__PTZwu {
+    width: 100%;
   }
 }
 
@@ -135,35 +330,65 @@
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/MetricCard.module.css ***!
   \********************************************************************************************************************************************************************************************************************************************************************************/
 .MetricCard_card__Y2CyR {
-  padding: 32px 40px;
-  border-right: 1px solid #e0e0e0;
-  background: #ffffff;
+  position: relative;
+  padding: 28px 30px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(11, 166, 223, 0.25), rgba(239, 119, 34, 0.16));
+  border: 1px solid rgba(244, 246, 251, 0.18);
+  box-shadow: 0 24px 36px rgba(10, 20, 40, 0.42);
+  overflow: hidden;
+  transition:
+    transform var(--transition-snappy),
+    box-shadow var(--transition-snappy),
+    border-color var(--transition-snappy);
 }
 
-.MetricCard_card__Y2CyR:last-child {
-  border-right: none;
+.MetricCard_card__Y2CyR::before {
+  content: "";
+  position: absolute;
+  inset: -40% 40% 40% -40%;
+  background: radial-gradient(circle, rgba(11, 166, 223, 0.45), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--transition-snappy);
+}
+
+.MetricCard_card__Y2CyR:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 46px rgba(4, 16, 30, 0.55);
+  border-color: rgba(250, 165, 51, 0.35);
+}
+
+.MetricCard_card__Y2CyR:hover::before {
+  opacity: 1;
 }
 
 .MetricCard_title__i1XFK {
-  color: #666666;
+  font-family: "Orbitron", "Inter", sans-serif;
+  color: rgba(244, 246, 251, 0.68);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  margin-bottom: 14px;
+  letter-spacing: 1.6px;
+  margin-bottom: 16px;
 }
 
 .MetricCard_value__Escv8 {
-  font-size: 34px;
-  font-weight: 300;
-  color: #1a1a1a;
-  margin-bottom: 6px;
+  font-size: 38px;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+  text-shadow: 0 0 16px rgba(11, 166, 223, 0.35);
+  animation: MetricCard_glowPulse__a0WPU 3.6s ease-in-out infinite;
 }
 
 .MetricCard_unit__sV4RV {
-  color: #999999;
+  color: rgba(244, 246, 251, 0.58);
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
 }
 
 @media (max-width: 768px) {
@@ -172,7 +397,19 @@
   }
 
   .MetricCard_value__Escv8 {
-    font-size: 28px;
+    font-size: 32px;
+  }
+}
+
+@keyframes MetricCard_glowPulse__a0WPU {
+  0%,
+  100% {
+    text-shadow: 0 0 12px rgba(11, 166, 223, 0.32), 0 0 2px rgba(235, 235, 235, 0.4);
+    opacity: 0.92;
+  }
+  50% {
+    text-shadow: 0 0 24px rgba(239, 119, 34, 0.4), 0 0 18px rgba(11, 166, 223, 0.45);
+    opacity: 1;
   }
 }
 
