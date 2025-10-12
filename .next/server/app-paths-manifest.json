@@ -1,0 +1,4 @@
+{
+  "/page": "app/page.js",
+  "/api/thingspeak/route": "app/api/thingspeak/route.js"
+}

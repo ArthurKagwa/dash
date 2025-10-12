@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Sensor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(23, 43, 77, 0.08);
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 32px 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .last-update {
+            color: #666666;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .metric-card {
+            padding: 32px 40px;
+            border-right: 1px solid #e0e0e0;
+            background: #ffffff;
+        }
+
+        .metric-card:last-child {
+            border-right: none;
+        }
+
+        .metric-card h3 {
+            color: #666666;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 14px;
+        }
+
+        .metric-value {
+            font-size: 34px;
+            font-weight: 300;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .metric-unit {
+            color: #999999;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .chart-container {
+            background: #ffffff;
+            padding: 42px 40px 48px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .chart-container h2 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 22px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 320px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .header,
+            .metric-card,
+            .chart-container {
+                padding: 24px;
+            }
+
+            .metric-value {
+                font-size: 28px;
+            }
+
+            .chart-wrapper {
+                height: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IoT Environmental Monitoring Dashboard</h1>
+            <p id="lastUpdate" class="last-update">Waiting for ThingSpeak credentials...</p>
+        </div>
+
+        <div class="metrics">
+            <div class="metric-card">
+                <h3>Temperature</h3>
+                <div class="metric-value" id="temperature">--</div>
+                <div class="metric-unit">Celsius</div>
+            </div>
+            <div class="metric-card">
+                <h3>Humidity</h3>
+                <div class="metric-value" id="humidity">--</div>
+                <div class="metric-unit">Percent</div>
+            </div>
+            <div class="metric-card">
+                <h3>Motion Events</h3>
+                <div class="metric-value" id="motion">--</div>
+                <div class="metric-unit">Total Count</div>
+            </div>
+            <div class="metric-card">
+                <h3>Battery Voltage</h3>
+                <div class="metric-value" id="battery">--</div>
+                <div class="metric-unit">Volts</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Temperature Trend</h2>
+            <div class="chart-wrapper">
+                <canvas id="tempChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h2>Humidity Trend</h2>
+            <div class="chart-wrapper">
+                <canvas id="humidityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ThingSpeak configuration (replace with your channel details)
+        const CHANNEL_ID = "3103667";
+        const READ_KEY = "VZNB9HYG580P4AO4";
+        const UPDATE_INTERVAL = 60000; // milliseconds
+        const MAX_RESULTS = 50;
+
+        // DOM references
+        const lastUpdateElement = document.getElementById("lastUpdate");
+        const temperatureElement = document.getElementById("temperature");
+        const humidityElement = document.getElementById("humidity");
+        const motionElement = document.getElementById("motion");
+        const batteryElement = document.getElementById("battery");
+
+        // Charts
+        let tempChart = null;
+        let humidityChart = null;
+
+        const credentialsReady =
+            CHANNEL_ID !== "YOUR_CHANNEL_ID" && READ_KEY !== "YOUR_READ_API_KEY";
+
+        if (!credentialsReady) {
+            lastUpdateElement.textContent =
+                "Update CHANNEL_ID and READ_KEY in dashboard.html to load live data.";
+        } else {
+            fetchSensorData();
+            setInterval(fetchSensorData, UPDATE_INTERVAL);
+        }
+
+        async function fetchSensorData() {
+            const url = `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds.json?api_key=${READ_KEY}&results=${MAX_RESULTS}`;
+
+            try {
+                lastUpdateElement.textContent = "Refreshing data from ThingSpeak...";
+
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const payload = await response.json();
+                updateDashboard(payload);
+            } catch (error) {
+                console.error("Error fetching ThingSpeak data:", error);
+                lastUpdateElement.textContent =
+                    "Unable to fetch data. Check the console for details.";
+            }
+        }
+
+        function updateDashboard(payload) {
+            const feeds = Array.isArray(payload?.feeds) ? payload.feeds : [];
+
+            if (feeds.length === 0) {
+                lastUpdateElement.textContent = "ThingSpeak returned no data yet.";
+                return;
+            }
+
+            const latest = feeds[feeds.length - 1];
+
+            temperatureElement.textContent = formatNumber(latest.field5, 2);
+            humidityElement.textContent = formatNumber(latest.field3, 1);
+            motionElement.textContent = formatInteger(latest.field4);
+            batteryElement.textContent = formatNumber(latest.field1, 3);
+
+            const lastUpdate = latest.created_at
+                ? new Date(latest.created_at)
+                : new Date();
+
+            lastUpdateElement.textContent = `Last updated: ${lastUpdate.toLocaleString(
+                "en-US",
+                {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            )}`;
+
+            const labels = feeds.map((entry) =>
+                formatLabel(entry.created_at)
+            );
+            const temperatureSeries = feeds.map((entry) =>
+                numberOrNull(entry.field5)
+            );
+            const humiditySeries = feeds.map((entry) =>
+                numberOrNull(entry.field3)
+            );
+
+            updateCharts(labels, temperatureSeries, humiditySeries);
+        }
+
+        function updateCharts(labels, temperatureSeries, humiditySeries) {
+            const tempCanvas = document.getElementById("tempChart");
+            const humidityCanvas = document.getElementById("humidityChart");
+
+            if (!tempCanvas || !humidityCanvas) {
+                return;
+            }
+
+            const tempContext = tempCanvas.getContext("2d");
+            const humidityContext = humidityCanvas.getContext("2d");
+
+            if (tempChart) {
+                tempChart.destroy();
+            }
+
+            if (humidityChart) {
+                humidityChart.destroy();
+            }
+
+            const baseOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: "#f0f0f0" },
+                        ticks: { color: "#666666", font: { size: 11 } }
+                    },
+                    y: {
+                        grid: { color: "#f0f0f0" },
+                        ticks: { color: "#666666", font: { size: 11 } }
+                    }
+                }
+            };
+
+            tempChart = new Chart(tempContext, {
+                type: "line",
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: "Temperature (deg C)",
+                            data: temperatureSeries,
+                            borderColor: "#333333",
+                            backgroundColor: "rgba(51, 51, 51, 0.08)",
+                            borderWidth: 1.5,
+                            tension: 0.2,
+                            fill: true,
+                            pointRadius: 2,
+                            pointHoverRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    ...baseOptions,
+                    scales: {
+                        ...baseOptions.scales,
+                        y: {
+                            ...baseOptions.scales.y,
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+
+            humidityChart = new Chart(humidityContext, {
+                type: "line",
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: "Humidity (%)",
+                            data: humiditySeries,
+                            borderColor: "#666666",
+                            backgroundColor: "rgba(102, 102, 102, 0.08)",
+                            borderWidth: 1.5,
+                            tension: 0.2,
+                            fill: true,
+                            pointRadius: 2,
+                            pointHoverRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    ...baseOptions,
+                    scales: {
+                        ...baseOptions.scales,
+                        y: {
+                            ...baseOptions.scales.y,
+                            beginAtZero: true,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        function formatNumber(value, decimals) {
+            const numeric = Number.parseFloat(value);
+            return Number.isFinite(numeric) ? numeric.toFixed(decimals) : "--";
+        }
+
+        function formatInteger(value) {
+            const numeric = Number.parseInt(value, 10);
+            return Number.isFinite(numeric) ? numeric.toString() : "--";
+        }
+
+        function numberOrNull(value) {
+            const numeric = Number.parseFloat(value);
+            return Number.isFinite(numeric) ? numeric : null;
+        }
+
+        function formatLabel(isoString) {
+            if (!isoString) {
+                return "";
+            }
+
+            return new Date(isoString).toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+    </script>
+</body>
+</html>

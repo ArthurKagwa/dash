@@ -1,0 +1,178 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/Dashboard.module.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************/
+.Dashboard_container__kBdCq {
+  max-width: 1200px;
+  margin: 20px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 45px rgba(23, 43, 77, 0.08);
+}
+
+.Dashboard_header__tbwsX {
+  background: #ffffff;
+  padding: 32px 40px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.Dashboard_title__w4f90 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.Dashboard_lastUpdate__Owljg {
+  color: #666666;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.Dashboard_controls__yoRUs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.Dashboard_controlGroup__Q_zQb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.Dashboard_controlLabel__JvcJD {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333333;
+}
+
+.Dashboard_select__U3IC5 {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  padding: 6px 30px 6px 10px;
+  font-size: 13px;
+  background: #ffffff url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L0.803847 0.5H11.1962L6 8Z' fill='%23666666'/%3E%3C/svg%3E") no-repeat right 10px center;
+  background-size: 12px 8px;
+  cursor: pointer;
+}
+
+.Dashboard_controlHint__BgI3o {
+  font-size: 12px;
+  color: #777777;
+}
+
+.Dashboard_metrics__C_UF9 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.Dashboard_chartSection__xw78k {
+  background: #ffffff;
+  padding: 42px 40px 48px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.Dashboard_chartTitle__XLd7n {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.Dashboard_chartWrapper__daJ3I {
+  position: relative;
+  height: 320px;
+}
+
+.Dashboard_status__nfXWG {
+  font-size: 13px;
+  color: #c0392b;
+  margin-top: 12px;
+}
+
+.Dashboard_channelName__o3bEB {
+  font-size: 13px;
+  font-weight: 500;
+  color: #444444;
+}
+
+@media (max-width: 768px) {
+  .Dashboard_container__kBdCq {
+    margin: 12px;
+  }
+
+  .Dashboard_header__tbwsX,
+  .Dashboard_chartSection__xw78k {
+    padding: 24px;
+  }
+
+  .Dashboard_chartWrapper__daJ3I {
+    height: 260px;
+  }
+
+  .Dashboard_controls__yoRUs {
+    gap: 8px;
+  }
+
+  .Dashboard_controlGroup__Q_zQb {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/MetricCard.module.css ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************/
+.MetricCard_card__Y2CyR {
+  padding: 32px 40px;
+  border-right: 1px solid #e0e0e0;
+  background: #ffffff;
+}
+
+.MetricCard_card__Y2CyR:last-child {
+  border-right: none;
+}
+
+.MetricCard_title__i1XFK {
+  color: #666666;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 14px;
+}
+
+.MetricCard_value__Escv8 {
+  font-size: 34px;
+  font-weight: 300;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.MetricCard_unit__sV4RV {
+  color: #999999;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .MetricCard_card__Y2CyR {
+    padding: 24px;
+  }
+
+  .MetricCard_value__Escv8 {
+    font-size: 28px;
+  }
+}
+
