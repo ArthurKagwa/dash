@@ -5,5 +5,5 @@ dist/
 .DS_Store
 *cache/
 npm-debug.log*
-.next/
+*.next/*
 out/
