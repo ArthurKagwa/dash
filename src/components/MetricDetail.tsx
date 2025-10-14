@@ -45,7 +45,8 @@ const TIME_RANGE_OPTIONS = [
     { label: "Last 24 hours", minutes: 1440 },
     { label: "Last 3 days", minutes: 4320 },
     { label: "Last 7 days", minutes: 10080 },
-    { label: "Last 30 days", minutes: 43200 }
+    { label: "Last 30 days", minutes: 43200 },
+    { label: "Last 90 days", minutes: 60 * 24 * 90 }
 ] as const;
 
 export function MetricDetail({ metric, chartPoints, channelName, error }: MetricDetailProps) {

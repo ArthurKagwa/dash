@@ -3,7 +3,7 @@ import { MetricDetail } from "@/components/MetricDetail";
 import { fetchThingSpeakFeeds, mapSeries } from "@/lib/thingspeak";
 import { getMetricConfig } from "@/lib/metricConfig";
 
-const DETAIL_RANGE_MINUTES = 43200; // 30 days
+const DETAIL_RANGE_MINUTES = 60 * 24 * 90; // 90 days
 
 type PageProps = {
     params: { metric: string };
