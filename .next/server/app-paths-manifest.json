@@ -1,5 +1,5 @@
 {
+  "/metrics/[metric]/page": "app/metrics/[metric]/page.js",
   "/page": "app/page.js",
-  "/api/thingspeak/route": "app/api/thingspeak/route.js",
-  "/metrics/[metric]/page": "app/metrics/[metric]/page.js"
+  "/api/thingspeak/route": "app/api/thingspeak/route.js"
 }

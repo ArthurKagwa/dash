@@ -254,7 +254,7 @@ export function Dashboard({
                 <MetricCard
                     title="Motion Events"
                     value={formatInteger(snapshot.motionCount)}
-                    unit="count"
+                    unit={formatCountUnit(snapshot.motionCount)}
                     href={METRIC_CONFIG.motion.path}
                 />
                 <MetricCard
@@ -443,9 +443,20 @@ function formatMetricWithUnit(value: number | null, decimals: number, unit: stri
     }
     const numeric =
         decimals <= 0 ? Math.round(value).toString() : value.toFixed(decimals);
-    if (!unit) {
+
+    const resolvedUnit =
+        unit === "count" ? formatCountUnit(value) : unit;
+
+    if (!resolvedUnit) {
         return numeric;
     }
-    const separator = unit === "%" ? "" : " ";
-    return `${numeric}${separator}${unit}`;
+    const separator = resolvedUnit === "%" ? "" : " ";
+    return `${numeric}${separator}${resolvedUnit}`;
+}
+
+function formatCountUnit(value: number | null | undefined) {
+    if (value === null || value === undefined || !Number.isFinite(value)) {
+        return "counts";
+    }
+    return Math.abs(Math.round(value)) === 1 ? "count" : "counts";
 }

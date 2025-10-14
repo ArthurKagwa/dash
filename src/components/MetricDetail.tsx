@@ -97,12 +97,12 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
               {
                   label: "Minimum increment",
                   value: formatNumber(aggregates.min, 0, metric.unit),
-                  hint: "Lowest interval count"
+                  hint: "Lowest interval counts"
               },
               {
                   label: "Maximum increment",
                   value: formatNumber(aggregates.max, 0, metric.unit),
-                  hint: "Highest interval count"
+                  hint: "Highest interval counts"
               }
           ]
         : [
@@ -432,10 +432,12 @@ function formatNumber(value: number | null, decimals: number, unit: string) {
         formatted = value.toFixed(decimals);
         formatted = formatted.replace(/\.0+$/, "").replace(/(\.\d*?)0+$/, "$1");
     }
-    const suffix = unit
-        ? unit === "%"
-            ? unit
-            : ` ${unit}`
+    const resolvedUnit =
+        unit === "count" ? formatCountUnit(value) : unit;
+    const suffix = resolvedUnit
+        ? resolvedUnit === "%"
+            ? resolvedUnit
+            : ` ${resolvedUnit}`
         : "";
     return `${formatted}${suffix}`;
 }
@@ -484,4 +486,8 @@ function filterPointsByMinutes(points: ChartPoint[], minutes: number) {
         const epoch = Date.parse(point.timestamp);
         return Number.isFinite(epoch) && epoch >= cutoff;
     });
+}
+
+function formatCountUnit(value: number) {
+    return Math.abs(Math.round(value)) === 1 ? "count" : "counts";
 }
