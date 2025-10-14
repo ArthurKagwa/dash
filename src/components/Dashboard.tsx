@@ -168,7 +168,6 @@ export function Dashboard({
     );
 
     const analytics = useMemo(() => {
-        const totalReadings = rawSeries.length;
         const firstReading = rawSeries[0]?.timestamp ?? null;
         const lastReading = rawSeries[rawSeries.length - 1]?.timestamp ?? null;
         let durationMinutes: number | null = null;
@@ -181,9 +180,9 @@ export function Dashboard({
         }
 
         return {
-        
             firstReading,
             lastReading,
+            durationMinutes,
             temperature: temperatureAggregates,
             humidity: humidityAggregates,
             motion: {
@@ -198,6 +197,26 @@ export function Dashboard({
         humidityAggregates,
         motionAggregates,
         batteryAggregates
+    ]);
+
+    const analysisWindowDescription = useMemo(() => {
+        const hasTimeframe = analytics.firstReading || analytics.lastReading;
+        if (!hasTimeframe) {
+            return "Timeline unavailable.";
+        }
+        const rangeText = formatTimestampRange(
+            analytics.firstReading,
+            analytics.lastReading
+        );
+        const durationText =
+            analytics.durationMinutes !== null
+                ? ` (${formatDuration(analytics.durationMinutes)})`
+                : "";
+        return `${rangeText}${durationText}`;
+    }, [
+        analytics.firstReading,
+        analytics.lastReading,
+        analytics.durationMinutes
     ]);
 
     return (
@@ -276,8 +295,11 @@ export function Dashboard({
 
             <section className={styles.analyticsSection}>
                 <h2 className={styles.sectionTitle}>Data Collection Analytics</h2>
+                <p className={styles.analyticsHint}>
+                    Analysis window: {analysisWindowDescription}
+                </p>
                 <div className={styles.analyticsGrid}>
-  
+
                     <MetricAnalyticsCard
                         title="Temperature"
                         config={METRIC_CONFIG.temperature}
