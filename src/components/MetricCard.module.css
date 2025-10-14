@@ -1,4 +1,5 @@
 .card {
+  display: block;
   position: relative;
   padding: 28px 30px;
   border-radius: 20px;
@@ -29,6 +30,17 @@
 
 .card:hover::before {
   opacity: 1;
+}
+
+.clickable {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.clickable:focus-visible {
+  outline: 2px solid rgba(11, 166, 223, 0.65);
+  outline-offset: 4px;
 }
 
 .title {

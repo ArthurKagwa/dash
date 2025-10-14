@@ -254,6 +254,145 @@
   text-transform: uppercase;
 }
 
+/* Analytics Section */
+.analyticsSection {
+  position: relative;
+  padding: 38px 52px 54px;
+  border-top: 1px solid var(--color-border);
+  background: rgba(15, 24, 42, 0.72);
+  overflow: hidden;
+}
+
+.analyticsSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(138, 123, 255, 0.15), transparent 60%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.sectionTitle {
+  position: relative;
+  z-index: 1;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(244, 246, 251, 0.92);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 2.6px;
+  text-shadow: 0 0 14px rgba(138, 123, 255, 0.45);
+}
+
+.analyticsGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.analyticsCard {
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(11, 166, 223, 0.12), rgba(138, 123, 255, 0.12));
+  border: 1px solid rgba(244, 246, 251, 0.16);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-snappy), box-shadow var(--transition-snappy), border-color var(--transition-snappy);
+}
+
+.analyticsCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(10, 20, 40, 0.5);
+  border-color: rgba(138, 123, 255, 0.4);
+}
+
+.analyticsLabel {
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(244, 246, 251, 0.7);
+  margin-bottom: 12px;
+}
+
+.analyticsValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  text-shadow: 0 0 12px rgba(11, 166, 223, 0.35);
+}
+
+.analyticsHint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(244, 246, 251, 0.56);
+}
+
+.analyticsRange {
+  font-size: 13px;
+  color: rgba(244, 246, 251, 0.6);
+  margin: 8px 0 0 0;
+}
+
+.analyticsTimestamp {
+  font-size: 14px;
+  color: rgba(244, 246, 251, 0.85);
+  margin: 0;
+  font-weight: 500;
+}
+
+.analyticsHighlights {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.analyticsHighlight {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 24, 42, 0.75);
+  border: 1px solid rgba(244, 246, 251, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.analyticsHighlightLabel {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(244, 246, 251, 0.6);
+}
+
+.analyticsHighlightValue {
+  font-size: 14px;
+  font-family: "Orbitron", "Inter", sans-serif;
+  color: var(--color-text-primary);
+}
+
+.analyticsExtra {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(244, 246, 251, 0.7);
+}
+
+.analyticsExtraLabel {
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.analyticsExtraValue {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
 @media (max-width: 1024px) {
   .container {
     margin: 32px 20px;
@@ -269,6 +408,10 @@
 
   .chartSection {
     padding: 32px 32px 44px;
+  }
+
+  .analyticsSection {
+    padding: 32px 36px 44px;
   }
 }
 
@@ -314,5 +457,17 @@
 
   .chartSelect {
     width: 100%;
+  }
+
+  .analyticsSection {
+    padding: 26px 22px 32px;
+  }
+
+  .analyticsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .analyticsHighlights {
+    grid-template-columns: 1fr;
   }
 }

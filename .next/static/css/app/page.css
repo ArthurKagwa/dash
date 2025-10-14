@@ -263,6 +263,147 @@
   text-transform: uppercase;
 }
 
+/* Analytics Section */
+.Dashboard_analyticsSection__epKRI {
+  position: relative;
+  padding: 38px 52px 54px;
+  border-top: 1px solid var(--color-border);
+  background: rgba(15, 24, 42, 0.72);
+  overflow: hidden;
+}
+
+.Dashboard_analyticsSection__epKRI::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(138, 123, 255, 0.15), transparent 60%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.Dashboard_sectionTitle__TUTFI {
+  position: relative;
+  z-index: 1;
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(244, 246, 251, 0.92);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 2.6px;
+  text-shadow: 0 0 14px rgba(138, 123, 255, 0.45);
+}
+
+.Dashboard_analyticsGrid__2jgIC {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-gap: 20px;
+  gap: 20px;
+}
+
+.Dashboard_analyticsCard__f1zhG {
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(11, 166, 223, 0.12), rgba(138, 123, 255, 0.12));
+  border: 1px solid rgba(244, 246, 251, 0.16);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-snappy), box-shadow var(--transition-snappy), border-color var(--transition-snappy);
+}
+
+.Dashboard_analyticsCard__f1zhG:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(10, 20, 40, 0.5);
+  border-color: rgba(138, 123, 255, 0.4);
+}
+
+.Dashboard_analyticsLabel__Mgsfa {
+  font-family: "Orbitron", "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(244, 246, 251, 0.7);
+  margin-bottom: 12px;
+}
+
+.Dashboard_analyticsValue__P6MIi {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+  text-shadow: 0 0 12px rgba(11, 166, 223, 0.35);
+}
+
+.Dashboard_analyticsHint__y88fC {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(244, 246, 251, 0.56);
+}
+
+.Dashboard_analyticsRange__Nr4uZ {
+  font-size: 13px;
+  color: rgba(244, 246, 251, 0.6);
+  margin: 8px 0 0 0;
+}
+
+.Dashboard_analyticsTimestamp__tEtSn {
+  font-size: 14px;
+  color: rgba(244, 246, 251, 0.85);
+  margin: 0;
+  font-weight: 500;
+}
+
+.Dashboard_analyticsHighlights__7XIlc {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-gap: 10px;
+  gap: 10px;
+}
+
+.Dashboard_analyticsHighlight__lY25n {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 24, 42, 0.75);
+  border: 1px solid rgba(244, 246, 251, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.Dashboard_analyticsHighlightLabel__jQVob {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(244, 246, 251, 0.6);
+}
+
+.Dashboard_analyticsHighlightValue__2quR7 {
+  font-size: 14px;
+  font-family: "Orbitron", "Inter", sans-serif;
+  color: var(--color-text-primary);
+}
+
+.Dashboard_analyticsExtra__AEqow {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(244, 246, 251, 0.7);
+}
+
+.Dashboard_analyticsExtraLabel___celO {
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.Dashboard_analyticsExtraValue__VcTPr {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
 @media (max-width: 1024px) {
   .Dashboard_container__kBdCq {
     margin: 32px 20px;
@@ -278,6 +419,10 @@
 
   .Dashboard_chartSection__xw78k {
     padding: 32px 32px 44px;
+  }
+
+  .Dashboard_analyticsSection__epKRI {
+    padding: 32px 36px 44px;
   }
 }
 
@@ -324,12 +469,25 @@
   .Dashboard_chartSelect__PTZwu {
     width: 100%;
   }
+
+  .Dashboard_analyticsSection__epKRI {
+    padding: 26px 22px 32px;
+  }
+
+  .Dashboard_analyticsGrid__2jgIC {
+    grid-template-columns: 1fr;
+  }
+
+  .Dashboard_analyticsHighlights__7XIlc {
+    grid-template-columns: 1fr;
+  }
 }
 
 /*!********************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/MetricCard.module.css ***!
   \********************************************************************************************************************************************************************************************************************************************************************************/
 .MetricCard_card__Y2CyR {
+  display: block;
   position: relative;
   padding: 28px 30px;
   border-radius: 20px;
@@ -360,6 +518,17 @@
 
 .MetricCard_card__Y2CyR:hover::before {
   opacity: 1;
+}
+
+.MetricCard_clickable__fSGX8 {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.MetricCard_clickable__fSGX8:focus-visible {
+  outline: 2px solid rgba(11, 166, 223, 0.65);
+  outline-offset: 4px;
 }
 
 .MetricCard_title__i1XFK {
