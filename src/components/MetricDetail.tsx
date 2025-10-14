@@ -64,6 +64,11 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
         [normalizedPoints, rangeMinutes]
     );
 
+    const selectedRangeLabel = useMemo(() => {
+        const option = TIME_RANGE_OPTIONS.find((timeRange) => timeRange.minutes === rangeMinutes);
+        return option?.label ?? "selected range";
+    }, [rangeMinutes]);
+
     const labels = useMemo(
         () => filteredPoints.map((point) => formatChartLabel(point.timestamp)),
         [filteredPoints]
@@ -193,6 +198,10 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
 
             <section className={styles.summarySection}>
                 <h2 className={styles.sectionTitle}>At a glance</h2>
+                <p className={styles.sectionNote}>
+                    These insights reflect the data inside the current timeframe ({selectedRangeLabel}). Adjust the
+                    range to explore other periods.
+                </p>
                 <div className={styles.summaryGrid}>
                     {summaryCards.map((card) => (
                         <StatCard key={card.label} label={card.label} value={card.value} hint={card.hint} />
