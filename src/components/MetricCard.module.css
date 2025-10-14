@@ -1,5 +1,6 @@
 .card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: relative;
   padding: 28px 30px;
   border-radius: 20px;
@@ -43,14 +44,6 @@
   outline-offset: 4px;
 }
 
-.heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
 .title {
   font-family: "Orbitron", "Inter", sans-serif;
   color: rgba(244, 246, 251, 0.68);
@@ -58,7 +51,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.6px;
-  margin: 0;
+  margin: 0 0 16px;
 }
 
 .value {
@@ -89,6 +82,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  margin-top: auto;
   transition: color var(--transition-snappy);
 }
 
@@ -101,8 +95,6 @@
   .card {
     padding: 20px;
     aspect-ratio: 1 / 1;
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
   }
 
