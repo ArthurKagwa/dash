@@ -58,6 +58,15 @@
   text-shadow: 0 0 18px rgba(11, 166, 223, 0.45);
 }
 
+.titleFull,
+.titleCompact {
+  display: block;
+}
+
+.titleCompact {
+  display: none;
+}
+
 .lastUpdate {
   color: var(--color-text-secondary);
   font-size: 14px;
@@ -427,6 +436,20 @@
 @media (max-width: 768px) {
   .container {
     margin: 22px 12px;
+  }
+
+  .title {
+    font-size: 24px;
+    letter-spacing: 1.4px;
+    line-height: 1.2;
+  }
+
+  .titleFull {
+    display: none;
+  }
+
+  .titleCompact {
+    display: block;
   }
 
   .header,

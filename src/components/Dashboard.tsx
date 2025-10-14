@@ -203,7 +203,16 @@ export function Dashboard({
     return (
         <main className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>IoT Environmental Monitoring Dashboard</h1>
+                <h1 className={styles.title}>
+                    <span className={styles.titleFull}>
+                        IoT Environmental Monitoring Dashboard
+                    </span>
+                    <span className={styles.titleCompact}>
+                        IoT Environment
+                        <br />
+                        Dashboard
+                    </span>
+                </h1>
                 <div className={styles.channelName}>
                     {channelName ? `Channel: ${channelName}` : "Channel name unavailable"}
                 </div>
