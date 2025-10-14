@@ -143,6 +143,15 @@
   background: rgba(12, 20, 36, 0.58);
 }
 
+@media (max-width: 768px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    padding: 20px 24px;
+    gap: 14px;
+  }
+}
+
 .chartSection {
   position: relative;
   padding: 38px 52px 54px;
