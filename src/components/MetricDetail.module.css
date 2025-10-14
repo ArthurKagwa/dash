@@ -258,6 +258,17 @@
     padding: 24px 20px;
   }
 
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .statCard {
+    aspect-ratio: 1 / 1;
+    justify-content: space-between;
+    padding: 16px;
+  }
+
   .chartWrapper {
     height: 280px;
   }
