@@ -9,11 +9,17 @@ type MetricCardProps = {
 };
 
 export function MetricCard({ title, value, unit, href }: MetricCardProps) {
+    const isInteractive = Boolean(href);
     const content = (
         <>
             <h3 className={styles.title}>{title}</h3>
             <div className={styles.value}>{value}</div>
             <span className={styles.unit}>{unit}</span>
+            {isInteractive ? (
+                <span className={styles.directive} aria-hidden="true">
+                    View details →
+                </span>
+            ) : null}
         </>
     );
 
