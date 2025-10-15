@@ -58,6 +58,9 @@ const NAV_SECTIONS: NavSection[] = [
     }
 ];
 
+const PROJECT_NAME = "IoT Sensor Hub";
+const PROJECT_TAGLINE = "Live metrics";
+
 export function AppShell({ children }: AppShellProps) {
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -114,30 +117,48 @@ export function AppShell({ children }: AppShellProps) {
     return (
         <div className={styles.shell}>
             <aside
-                className=
-                    {[
-                        styles.sidebar,
-                        isCollapsed ? styles.sidebarCollapsed : "",
-                        isDrawerOpen ? styles.sidebarOpen : ""
-                    ]
-                        .filter(Boolean)
-                        .join(" ")}
+                className={[
+                    styles.sidebar,
+                    isCollapsed ? styles.sidebarCollapsed : "",
+                    isDrawerOpen ? styles.sidebarOpen : ""
+                ]
+                    .filter(Boolean)
+                    .join(" ")}
             >
                 <div className={styles.sidebarInner}>
                     <div className={styles.brandRow}>
-                        <span className={styles.brandMark}>IoT</span>
-                        <div className={styles.brandText}>
-                            <span className={styles.brandTitle}>Sensor Hub</span>
-                            <span className={styles.brandSubtitle}>Live metrics</span>
+                        <div className={styles.brandIdentity}>
+                            <span className={styles.brandMark}>IoT</span>
+                            <div className={styles.brandText}>
+                                <span className={styles.brandTitle}>{PROJECT_NAME}</span>
+                                <span className={styles.brandSubtitle}>{PROJECT_TAGLINE}</span>
+                            </div>
                         </div>
-                        <button
-                            type="button"
-                            className={styles.drawerClose}
-                            aria-label="Close navigation"
-                            onClick={() => setIsDrawerOpen(false)}
-                        >
-                            ×
-                        </button>
+                        <div className={styles.brandActions}>
+                            <button
+                                type="button"
+                                className={[
+                                    styles.collapseToggle,
+                                    isCollapsed ? styles.collapseToggleCollapsed : ""
+                                ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                                aria-pressed={isCollapsed}
+                                title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                                onClick={() => setIsCollapsed((previous) => !previous)}
+                            >
+                                <span className={styles.collapseIcon} aria-hidden="true" />
+                            </button>
+                            <button
+                                type="button"
+                                className={styles.drawerClose}
+                                aria-label="Close navigation"
+                                onClick={() => setIsDrawerOpen(false)}
+                            >
+                                ×
+                            </button>
+                        </div>
                     </div>
                     <nav className={styles.nav} aria-label="Primary">
                         {navSections.map((section) => (
@@ -155,8 +176,10 @@ export function AppShell({ children }: AppShellProps) {
                                                     .filter(Boolean)
                                                     .join(" ")}
                                                 data-short={item.shortLabel}
+                                                data-label={item.label}
                                                 aria-current={isActive(item.href) ? "page" : undefined}
                                                 onClick={handleNavLinkClick}
+                                                title={item.label}
                                             >
                                                 <span className={styles.navLabel}>{item.label}</span>
                                             </Link>
@@ -189,16 +212,7 @@ export function AppShell({ children }: AppShellProps) {
                     >
                         <span className={styles.hamburger} aria-hidden="true" />
                     </button>
-                    <span className={styles.topBarTitle}>IoT Sensor Dashboard</span>
-                    <button
-                        type="button"
-                        className={styles.collapseButton}
-                        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-                        aria-pressed={isCollapsed}
-                        onClick={() => setIsCollapsed((previous) => !previous)}
-                    >
-                        {isCollapsed ? "Expand" : "Collapse"}
-                    </button>
+                    <span className={styles.topBarTitle}>{PROJECT_NAME}</span>
                 </div>
                 <div className={styles.page}>{children}</div>
             </div>

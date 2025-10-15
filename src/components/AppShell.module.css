@@ -39,6 +39,13 @@
   gap: 14px;
 }
 
+.brandIdentity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
 .brandMark {
   display: inline-flex;
   align-items: center;
@@ -59,6 +66,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  transition: opacity var(--transition-snappy), transform var(--transition-snappy);
+}
+
+.brandActions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .brandTitle {
@@ -99,6 +114,49 @@
   background: rgba(11, 166, 223, 0.12);
   border-color: rgba(11, 166, 223, 0.45);
   color: var(--color-text-primary);
+}
+
+.collapseToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(244, 246, 251, 0.18);
+  background: rgba(15, 24, 42, 0.6);
+  color: rgba(244, 246, 251, 0.82);
+  cursor: pointer;
+  transition: background var(--transition-snappy), border-color var(--transition-snappy),
+    color var(--transition-snappy);
+}
+
+.collapseToggle:hover,
+.collapseToggle:focus-visible {
+  background: rgba(11, 166, 223, 0.18);
+  border-color: rgba(11, 166, 223, 0.45);
+  color: var(--color-text-primary);
+}
+
+.collapseIcon {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+}
+
+.collapseIcon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(135deg);
+  transition: transform var(--transition-snappy);
+}
+
+.collapseToggleCollapsed .collapseIcon::before {
+  transform: rotate(-45deg);
 }
 
 .nav {
@@ -227,6 +285,52 @@
   border-radius: 16px;
 }
 
+.sidebarCollapsed .navLink::after {
+  content: attr(data-label);
+  position: absolute;
+  left: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) scale(0.96);
+  transform-origin: left center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(15, 24, 42, 0.9);
+  color: var(--color-text-primary);
+  box-shadow: 0 18px 34px rgba(5, 10, 20, 0.4);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-snappy), transform var(--transition-snappy);
+}
+
+.sidebarCollapsed .navLink:hover::after,
+.sidebarCollapsed .navLink:focus-visible::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.sidebarCollapsed .brandRow {
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.sidebarCollapsed .brandIdentity {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebarCollapsed .brandActions {
+  margin-left: 0;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sidebarCollapsed .nav {
+  align-items: center;
+}
+
 .content {
   flex: 1;
   display: flex;
@@ -302,28 +406,6 @@
   top: 6px;
 }
 
-.collapseButton {
-  align-self: center;
-  padding: 10px 18px;
-  border-radius: 14px;
-  border: 1px solid rgba(244, 246, 251, 0.18);
-  background: rgba(15, 24, 42, 0.6);
-  color: rgba(244, 246, 251, 0.82);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background var(--transition-snappy), border-color var(--transition-snappy),
-    color var(--transition-snappy);
-}
-
-.collapseButton:hover,
-.collapseButton:focus-visible {
-  background: rgba(11, 166, 223, 0.18);
-  border-color: rgba(11, 166, 223, 0.45);
-  color: var(--color-text-primary);
-}
 
 .page {
   flex: 1;
@@ -392,7 +474,7 @@
     display: inline-flex;
   }
 
-  .collapseButton {
+  .collapseToggle {
     display: none;
   }
 
