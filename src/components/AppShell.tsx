@@ -61,6 +61,20 @@ const NAV_SECTIONS: NavSection[] = [
 const PROJECT_NAME = "IoT Sensor Hub";
 const PROJECT_TAGLINE = "Live metrics";
 
+function getGreeting(now: Date) {
+    const hour = now.getHours();
+    if (hour < 12) {
+        return "Good morning";
+    }
+    if (hour < 17) {
+        return "Good afternoon";
+    }
+    if (hour < 21) {
+        return "Good evening";
+    }
+    return "Good night";
+}
+
 export function AppShell({ children }: AppShellProps) {
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -212,7 +226,10 @@ export function AppShell({ children }: AppShellProps) {
                     >
                         <span className={styles.hamburger} aria-hidden="true" />
                     </button>
-                    <span className={styles.topBarTitle}>{PROJECT_NAME}</span>
+                    <div className={styles.topBarHeading}>
+                        <span className={styles.topBarTitle}>{PROJECT_NAME}</span>
+                        <span className={styles.topBarGreeting}>{getGreeting(new Date())}</span>
+                    </div>
                 </div>
                 <div className={styles.page}>{children}</div>
             </div>
