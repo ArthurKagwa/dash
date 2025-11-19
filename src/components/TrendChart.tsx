@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -12,6 +13,7 @@ import {
     Legend,
     ChartOptions
 } from "chart.js";
+import zoomPlugin from "chartjs-plugin-zoom";
 import { Line } from "react-chartjs-2";
 
 ChartJS.register(
@@ -22,7 +24,8 @@ ChartJS.register(
     Title,
     Tooltip,
     Filler,
-    Legend
+    Legend,
+    zoomPlugin
 );
 
 type TrendChartProps = {
@@ -46,6 +49,14 @@ export function TrendChart({
     suggestedMax,
     suggestedMin
 }: TrendChartProps) {
+    const chartRef = useRef<ChartJS<"line">>(null);
+
+    const handleResetZoom = () => {
+        if (chartRef.current) {
+            chartRef.current.resetZoom();
+        }
+    };
+
     const axisColor = "rgba(235, 235, 235, 0.28)";
     const gridColor = "rgba(235, 235, 235, 0.12)";
     const hoverLinePlugin = {
@@ -86,6 +97,26 @@ export function TrendChart({
         plugins: {
             legend: { display: false },
             title: { display: false },
+            zoom: {
+                pan: {
+                    enabled: true,
+                    mode: "x",
+                    modifierKey: null
+                },
+                zoom: {
+                    wheel: {
+                        enabled: true,
+                        modifierKey: "ctrl"
+                    },
+                    pinch: {
+                        enabled: true
+                    },
+                    mode: "x"
+                },
+                limits: {
+                    x: { min: "original", max: "original" }
+                }
+            },
             tooltip: {
                 mode: "index",
                 intersect: false,
@@ -163,33 +194,69 @@ export function TrendChart({
     };
 
     return (
-        <Line
-            options={options}
-            data={{
-                labels,
-                datasets: [
-                    {
-                        label,
-                        data,
-                        borderColor,
-                        backgroundColor,
-                        borderWidth: 2,
-                        tension: 0.2,
-                        fill: {
-                            target: "origin",
-                            above: backgroundColor
-                        },
-                        pointRadius: 3,
-                        pointHoverRadius: 6,
-                        pointBackgroundColor: "rgba(235, 235, 235, 0.85)",
-                        pointBorderColor: borderColor,
-                        pointBorderWidth: 2,
-                        pointHoverBackgroundColor: borderColor,
-                        pointHoverBorderColor: "rgba(244, 246, 251, 0.9)"
-                    }
-                ]
-            }}
-            plugins={[hoverLinePlugin]}
-        />
+        <div style={{ position: "relative" }}>
+            <div style={{ 
+                marginBottom: "8px", 
+                display: "flex", 
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: "0.85rem",
+                color: "rgba(235, 235, 235, 0.5)"
+            }}>
+                <span>💡 Drag to pan • Ctrl+Scroll to zoom</span>
+                <button
+                    onClick={handleResetZoom}
+                    style={{
+                        padding: "4px 12px",
+                        fontSize: "0.8rem",
+                        backgroundColor: "rgba(11, 166, 223, 0.15)",
+                        border: "1px solid rgba(11, 166, 223, 0.3)",
+                        borderRadius: "4px",
+                        color: "#0BA6DF",
+                        cursor: "pointer",
+                        transition: "all 0.2s"
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "rgba(11, 166, 223, 0.25)";
+                        e.currentTarget.style.borderColor = "rgba(11, 166, 223, 0.5)";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "rgba(11, 166, 223, 0.15)";
+                        e.currentTarget.style.borderColor = "rgba(11, 166, 223, 0.3)";
+                    }}
+                >
+                    Reset Zoom
+                </button>
+            </div>
+            <Line
+                ref={chartRef}
+                options={options}
+                data={{
+                    labels,
+                    datasets: [
+                        {
+                            label,
+                            data,
+                            borderColor,
+                            backgroundColor,
+                            borderWidth: 2,
+                            tension: 0.2,
+                            fill: {
+                                target: "origin",
+                                above: backgroundColor
+                            },
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: "rgba(235, 235, 235, 0.85)",
+                            pointBorderColor: borderColor,
+                            pointBorderWidth: 2,
+                            pointHoverBackgroundColor: borderColor,
+                            pointHoverBorderColor: "rgba(244, 246, 251, 0.9)"
+                        }
+                    ]
+                }}
+                plugins={[hoverLinePlugin]}
+            />
+        </div>
     );
 }
