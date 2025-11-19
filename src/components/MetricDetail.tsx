@@ -19,7 +19,8 @@ import type { MetricConfig } from "@/lib/metricConfig";
 import {
     buildMetricPoints,
     computeMetricAggregates,
-    deriveDifferentialSeries
+    deriveDifferentialSeries,
+    filterOutliers
 } from "@/lib/metricAnalytics";
 import type { MetricAggregates } from "@/lib/metricAnalytics";
 
@@ -83,7 +84,7 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
     );
 
     const aggregates = useMemo(
-        () => computeMetricAggregates(buildMetricPoints(filteredPoints)),
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(filteredPoints))),
         [filteredPoints]
     );
 

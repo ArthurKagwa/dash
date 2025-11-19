@@ -248,3 +248,58 @@ export function deriveDifferentialSeries(
         return { ...point, value: diff };
     });
 }
+
+/**
+ * Detects outliers in a dataset using the Interquartile Range (IQR) method.
+ * Returns the indices of points that are considered outliers.
+ * 
+ * A point is considered an outlier if:
+ * value < Q1 - 1.5 * IQR  OR  value > Q3 + 1.5 * IQR
+ */
+export function detectOutliers(points: MetricPoint[]): Set<number> {
+    if (points.length < 4) {
+        // Not enough data points to reliably detect outliers
+        return new Set();
+    }
+
+    const values = points.map((point) => point.value);
+    const sortedValues = [...values].sort((a, b) => a - b);
+    
+    const q1Index = Math.floor(sortedValues.length * 0.25);
+    const q3Index = Math.floor(sortedValues.length * 0.75);
+    
+    const q1 = sortedValues[q1Index];
+    const q3 = sortedValues[q3Index];
+    const iqr = q3 - q1;
+    
+    const lowerBound = q1 - 1.5 * iqr;
+    const upperBound = q3 + 1.5 * iqr;
+    
+    const outlierIndices = new Set<number>();
+    values.forEach((value, index) => {
+        if (value < lowerBound || value > upperBound) {
+            outlierIndices.add(index);
+        }
+    });
+    
+    return outlierIndices;
+}
+
+/**
+ * Filters out outliers from a metric points array using the IQR method.
+ * Returns a new array with outliers removed.
+ */
+export function filterOutliers(points: MetricPoint[]): MetricPoint[] {
+    if (points.length < 4) {
+        // Not enough data points to reliably detect outliers
+        return points;
+    }
+
+    const outlierIndices = detectOutliers(points);
+    
+    if (outlierIndices.size === 0) {
+        return points;
+    }
+    
+    return points.filter((_, index) => !outlierIndices.has(index));
+}

@@ -10,7 +10,8 @@ import type { MetricConfig } from "@/lib/metricConfig";
 import {
     buildMetricPoints,
     computeMetricAggregates,
-    deriveDifferentialSeries
+    deriveDifferentialSeries,
+    filterOutliers
 } from "@/lib/metricAnalytics";
 import type { MetricAggregates } from "@/lib/metricAnalytics";
 
@@ -148,22 +149,22 @@ export function Dashboard({
     );
 
     const temperatureAggregates = useMemo(
-        () => computeMetricAggregates(buildMetricPoints(temperatureChartPoints)),
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(temperatureChartPoints))),
         [temperatureChartPoints]
     );
 
     const humidityAggregates = useMemo(
-        () => computeMetricAggregates(buildMetricPoints(humidityChartPoints)),
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(humidityChartPoints))),
         [humidityChartPoints]
     );
 
     const motionAggregates = useMemo(
-        () => computeMetricAggregates(buildMetricPoints(motionChartPoints)),
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(motionChartPoints))),
         [motionChartPoints]
     );
 
     const batteryAggregates = useMemo(
-        () => computeMetricAggregates(buildMetricPoints(batteryChartPoints)),
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(batteryChartPoints))),
         [batteryChartPoints]
     );
 
