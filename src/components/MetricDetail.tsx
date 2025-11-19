@@ -83,10 +83,12 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
         [filteredPoints]
     );
 
-    const aggregates = useMemo(
-        () => computeMetricAggregates(filterOutliers(buildMetricPoints(filteredPoints))),
-        [filteredPoints]
-    );
+    const aggregates = useMemo(() => {
+        const points = buildMetricPoints(filteredPoints);
+        // Exempt motion events from outlier filtering
+        const filteredForAnalysis = isMotionMetric ? points : filterOutliers(points);
+        return computeMetricAggregates(filteredForAnalysis);
+    }, [filteredPoints, isMotionMetric]);
 
     const summaryCards = isMotionMetric
         ? [

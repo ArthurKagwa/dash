@@ -159,7 +159,7 @@ export function Dashboard({
     );
 
     const motionAggregates = useMemo(
-        () => computeMetricAggregates(filterOutliers(buildMetricPoints(motionChartPoints))),
+        () => computeMetricAggregates(buildMetricPoints(motionChartPoints)),
         [motionChartPoints]
     );
 
