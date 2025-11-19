@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -50,10 +50,12 @@ export function TrendChart({
     suggestedMin
 }: TrendChartProps) {
     const chartRef = useRef<ChartJS<"line">>(null);
+    const [isZoomed, setIsZoomed] = useState(false);
 
     const handleResetZoom = () => {
         if (chartRef.current) {
             chartRef.current.resetZoom();
+            setIsZoomed(false);
         }
     };
 
@@ -110,7 +112,12 @@ export function TrendChart({
                     pinch: {
                         enabled: true
                     },
-                    mode: "x"
+                    mode: "x",
+                    onZoom: ({ chart }) => {
+                        const xScale = chart.scales.x;
+                        const isCurrentlyZoomed = xScale.min !== xScale.options.min || xScale.max !== xScale.options.max;
+                        setIsZoomed(isCurrentlyZoomed);
+                    }
                 },
                 limits: {
                     x: { min: "original", max: "original" }
@@ -227,7 +234,7 @@ export function TrendChart({
                     Reset Zoom
                 </button>
             </div>
-            <div style={{ position: "relative", width: "100%", height: "calc(100% - 36px)" }}>
+            <div style={{ position: "relative", width: "100%", height: "calc(100% - 36px)", cursor: isZoomed ? "grab" : "default" }}>
                 <Line
                     ref={chartRef}
                     options={options}
