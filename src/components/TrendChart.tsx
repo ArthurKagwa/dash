@@ -193,7 +193,7 @@ export function TrendChart({
     };
 
     return (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", width: "100%", height: "100%" }}>
             <div style={{ 
                 marginBottom: "8px", 
                 display: "flex", 
@@ -227,35 +227,37 @@ export function TrendChart({
                     Reset Zoom
                 </button>
             </div>
-            <Line
-                ref={chartRef}
-                options={options}
-                data={{
-                    labels,
-                    datasets: [
-                        {
-                            label,
-                            data,
-                            borderColor,
-                            backgroundColor,
-                            borderWidth: 2,
-                            tension: 0.2,
-                            fill: {
-                                target: "origin",
-                                above: backgroundColor
-                            },
-                            pointRadius: 3,
-                            pointHoverRadius: 6,
-                            pointBackgroundColor: "rgba(235, 235, 235, 0.85)",
-                            pointBorderColor: borderColor,
-                            pointBorderWidth: 2,
-                            pointHoverBackgroundColor: borderColor,
-                            pointHoverBorderColor: "rgba(244, 246, 251, 0.9)"
-                        }
-                    ]
-                }}
-                plugins={[hoverLinePlugin]}
-            />
+            <div style={{ position: "relative", width: "100%", height: "calc(100% - 36px)" }}>
+                <Line
+                    ref={chartRef}
+                    options={options}
+                    data={{
+                        labels,
+                        datasets: [
+                            {
+                                label,
+                                data,
+                                borderColor,
+                                backgroundColor,
+                                borderWidth: 2,
+                                tension: 0.2,
+                                fill: {
+                                    target: "origin",
+                                    above: backgroundColor
+                                },
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: "rgba(235, 235, 235, 0.85)",
+                                pointBorderColor: borderColor,
+                                pointBorderWidth: 2,
+                                pointHoverBackgroundColor: borderColor,
+                                pointHoverBorderColor: "rgba(244, 246, 251, 0.9)"
+                            }
+                        ]
+                    }}
+                    plugins={[hoverLinePlugin]}
+                />
+            </div>
         </div>
     );
 }
