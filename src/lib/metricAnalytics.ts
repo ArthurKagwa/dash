@@ -254,7 +254,9 @@ export function deriveDifferentialSeries(
  * Returns the indices of points that are considered outliers.
  * 
  * A point is considered an outlier if:
- * value < Q1 - 1.5 * IQR  OR  value > Q3 + 1.5 * IQR
+ * value < Q1 - 3 * IQR  OR  value > Q3 + 3 * IQR
+ * 
+ * Using 3x IQR instead of 1.5x for a more lenient filter that only removes extreme outliers.
  */
 export function detectOutliers(points: MetricPoint[]): Set<number> {
     if (points.length < 4) {
@@ -272,8 +274,9 @@ export function detectOutliers(points: MetricPoint[]): Set<number> {
     const q3 = sortedValues[q3Index];
     const iqr = q3 - q1;
     
-    const lowerBound = q1 - 1.5 * iqr;
-    const upperBound = q3 + 1.5 * iqr;
+    // Using 3x multiplier for more lenient filtering (only extreme outliers)
+    const lowerBound = q1 - 3 * iqr;
+    const upperBound = q3 + 3 * iqr;
     
     const outlierIndices = new Set<number>();
     values.forEach((value, index) => {
