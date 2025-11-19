@@ -100,8 +100,7 @@ export function TrendChart({
             zoom: {
                 pan: {
                     enabled: true,
-                    mode: "x",
-                    modifierKey: null
+                    mode: "x"
                 },
                 zoom: {
                     wheel: {
