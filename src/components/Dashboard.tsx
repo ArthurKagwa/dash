@@ -11,7 +11,8 @@ import {
     buildMetricPoints,
     computeMetricAggregates,
     deriveDifferentialSeries,
-    filterOutliers
+    filterOutliers,
+    filterChartOutliers
 } from "@/lib/metricAnalytics";
 import type { MetricAggregates } from "@/lib/metricAnalytics";
 
@@ -134,9 +135,9 @@ export function Dashboard({
             value: point.motion ?? null
         }));
         if (!METRIC_CONFIG.motion.isCumulative) {
-            return base;
+            return filterChartOutliers(base);
         }
-        return deriveDifferentialSeries(base);
+        return filterChartOutliers(deriveDifferentialSeries(base));
     }, [rawSeries]);
 
     const batteryChartPoints = useMemo(
@@ -159,7 +160,7 @@ export function Dashboard({
     );
 
     const motionAggregates = useMemo(
-        () => computeMetricAggregates(buildMetricPoints(motionChartPoints)),
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(motionChartPoints))),
         [motionChartPoints]
     );
 

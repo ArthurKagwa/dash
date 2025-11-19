@@ -20,7 +20,8 @@ import {
     buildMetricPoints,
     computeMetricAggregates,
     deriveDifferentialSeries,
-    filterOutliers
+    filterOutliers,
+    filterChartOutliers
 } from "@/lib/metricAnalytics";
 import type { MetricAggregates } from "@/lib/metricAnalytics";
 
@@ -56,7 +57,10 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
     const isMotionMetric = metric.slug === "motion" && isCumulative;
 
     const normalizedPoints = useMemo(
-        () => (isCumulative ? deriveDifferentialSeries(chartPoints) : chartPoints),
+        () => {
+            const transformed = isCumulative ? deriveDifferentialSeries(chartPoints) : chartPoints;
+            return filterChartOutliers(transformed);
+        },
         [chartPoints, isCumulative]
     );
 
@@ -83,12 +87,10 @@ export function MetricDetail({ metric, chartPoints, channelName, error }: Metric
         [filteredPoints]
     );
 
-    const aggregates = useMemo(() => {
-        const points = buildMetricPoints(filteredPoints);
-        // Exempt motion events from outlier filtering
-        const filteredForAnalysis = isMotionMetric ? points : filterOutliers(points);
-        return computeMetricAggregates(filteredForAnalysis);
-    }, [filteredPoints, isMotionMetric]);
+    const aggregates = useMemo(
+        () => computeMetricAggregates(filterOutliers(buildMetricPoints(filteredPoints))),
+        [filteredPoints]
+    );
 
     const summaryCards = isMotionMetric
         ? [

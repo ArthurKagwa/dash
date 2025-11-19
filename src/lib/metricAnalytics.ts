@@ -303,3 +303,41 @@ export function filterOutliers(points: MetricPoint[]): MetricPoint[] {
     
     return points.filter((_, index) => !outlierIndices.has(index));
 }
+
+/**
+ * Filters out outliers from chart value points for display purposes.
+ * Replaces outlier values with null so they don't appear on the chart.
+ */
+export function filterChartOutliers(chartPoints: ChartValuePoint[]): ChartValuePoint[] {
+    if (chartPoints.length < 4) {
+        return chartPoints;
+    }
+
+    // Build metric points for outlier detection
+    const metricPoints = buildMetricPoints(chartPoints);
+    if (metricPoints.length < 4) {
+        return chartPoints;
+    }
+
+    const outlierIndices = detectOutliers(metricPoints);
+    
+    if (outlierIndices.size === 0) {
+        return chartPoints;
+    }
+
+    // Create a map of timestamps to outlier status
+    const outlierTimestamps = new Set<string>();
+    metricPoints.forEach((point, index) => {
+        if (outlierIndices.has(index)) {
+            outlierTimestamps.add(point.timestamp);
+        }
+    });
+
+    // Replace outlier values with null
+    return chartPoints.map((point) => {
+        if (point.timestamp && outlierTimestamps.has(point.timestamp)) {
+            return { ...point, value: null };
+        }
+        return point;
+    });
+}
